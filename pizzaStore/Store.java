@@ -1,4 +1,5 @@
 package pizzaStore;
+
 import java.util.*;
 
 public class Store {
@@ -11,6 +12,7 @@ public class Store {
     private int zip;
 
     //Ingredients
+    //Each store may have different variety of ingredients
     private HashMap<String, Integer> ingredients;
     
     //Initialize the store
@@ -35,7 +37,6 @@ public class Store {
     //Setter and Getter for ingredients
     public int checkIngredient(String ingredient) {
         if (!this.ingredients.containsKey(ingredient) || this.ingredients.get(ingredient) == 0) {
-            System.out.println("There are no more " + ingredient + " in stock!");
             return 0;
         }
         else {
@@ -55,5 +56,42 @@ public class Store {
         }
 
         this.ingredients.put(ingredient, stock);
+    }
+
+    //Making a pizza
+    public Pizza createPizza() {
+        Pizza order = new Pizza();
+        Scanner input = new Scanner(System.in);
+        String choice = "";
+
+        while (true) {
+            System.out.println("========================================");
+            System.out.print("What do you want on your pizza? We have: ");
+            System.out.println(this.ingredients.keySet().toString());
+
+            System.out.print("Your pizza have: ");
+            System.out.println(order.checkPizza());
+
+            System.out.println("Type 'exit' to complete order");
+
+            choice = input.nextLine().toLowerCase();
+            if (choice.equalsIgnoreCase("exit")) {
+                break;
+            }
+            else if (checkIngredient(choice) == 0) {
+                System.out.println("We don't have " + choice + " in stock!");
+            }
+            else if (order.containTopping(choice)) {
+                System.out.println("Your pizza already have it!");
+            }
+            else {
+                int prevAmount = this.ingredients.get(choice);
+                this.ingredients.put(choice, prevAmount - 1);
+                order.addToppings(choice);
+            }
+        }
+        input.close();
+
+        return order;
     }
 }

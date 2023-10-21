@@ -1,10 +1,14 @@
 import pizzaStore.Store;
+import pizzaStore.Pizza;
 
 public class Customer {
     public static void main(String[] args) {
-        System.out.println("Hello World!");
 
         Store one = new Store();
-        System.out.println(one.checkIngredient("cheese"));
+        one.restock("pepperoni", 10);
+        one.restock("olive", 10);
+
+        Pizza order = one.createPizza();
+        System.out.println("Your pizza have " + order.checkPizza() + ". Enjoy!");
     }
 }
